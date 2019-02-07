@@ -15,7 +15,7 @@ public class LoggerDelegate implements JavaDelegate {
   private final Logger LOGGER = Logger.getLogger(LoggerDelegate.class.getName());
   
   public void execute(DelegateExecution execution) throws Exception {
-    
+	LOGGER.info("******************************************************8");
     LOGGER.info("\n\n THis is a development branch  ... LoggerDelegate invoked by "
             + "processDefinitionId=" + execution.getProcessDefinitionId()
             + ", activtyId=" + execution.getCurrentActivityId()
