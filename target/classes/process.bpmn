@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_0rek0la" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="2.2.4">
+  <bpmn:process id="VenderPayment" name="Vendor Payment" isExecutable="true" camunda:candidateStarterGroups="maker, Maker" camunda:candidateStarterUsers="john">
+    <bpmn:extensionElements>
+      <camunda:properties>
+        <camunda:property />
+      </camunda:properties>
+    </bpmn:extensionElements>
+    <bpmn:startEvent id="StartEvent_1" name="Create Transaction">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="fromAccount" label="Account Number" type="enum">
+            <camunda:value id="Value_1234567890" name="1234567890 USD" />
+            <camunda:value id="Value_2233445566" name="2233445566 AED" />
+          </camunda:formField>
+          <camunda:formField id="beneficaryAccount" label="Vendor" type="enum">
+            <camunda:value id="Value_0123456789" name="Boeing 0123456789 USD" />
+            <camunda:value id="Value_0234567890" name="Newyork Airport 0234567890 USD" />
+          </camunda:formField>
+          <camunda:formField id="paymentPriority" label="Urgent Payment" type="boolean" defaultValue="YES" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:outgoing>SequenceFlow_1skajv8</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_1skajv8" sourceRef="StartEvent_1" targetRef="Task_0xbkhcr" />
+    <bpmn:userTask id="Task_0xbkhcr" name="Approve Transaction" camunda:candidateGroups="checker">
+      <bpmn:extensionElements>
+        <camunda:formData>
+          <camunda:formField id="FormField_334foek" label="Approved" type="boolean" />
+        </camunda:formData>
+      </bpmn:extensionElements>
+      <bpmn:incoming>SequenceFlow_1skajv8</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1jk2upw</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="SequenceFlow_1jk2upw" sourceRef="Task_0xbkhcr" targetRef="Task_0uktcid" />
+    <bpmn:serviceTask id="Task_0uktcid" name="Process Transaction in Local DB" camunda:class="com.ss.demo.EtihadSystem.LoggerDelegate">
+      <bpmn:incoming>SequenceFlow_1jk2upw</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0ec9uo9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0ec9uo9" sourceRef="Task_0uktcid" targetRef="Task_12wtaq9" />
+    <bpmn:endEvent id="EndEvent_086dpgt">
+      <bpmn:incoming>SequenceFlow_18l7zfd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="SequenceFlow_18l7zfd" sourceRef="Task_12wtaq9" targetRef="EndEvent_086dpgt" />
+    <bpmn:serviceTask id="Task_12wtaq9" name="Create Transaction in DLT" camunda:class="com.ss.demo.EtihadSystem.LoggerDelegate">
+      <bpmn:incoming>SequenceFlow_0ec9uo9</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_18l7zfd</bpmn:outgoing>
+    </bpmn:serviceTask>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="VenderPayment">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="173" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="163" y="145" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1skajv8_di" bpmnElement="SequenceFlow_1skajv8">
+        <di:waypoint x="209" y="120" />
+        <di:waypoint x="356" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="UserTask_04spoe8_di" bpmnElement="Task_0xbkhcr">
+        <dc:Bounds x="356" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_1jk2upw_di" bpmnElement="SequenceFlow_1jk2upw">
+        <di:waypoint x="456" y="120" />
+        <di:waypoint x="644" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_000qf8c_di" bpmnElement="Task_0uktcid">
+        <dc:Bounds x="644" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0ec9uo9_di" bpmnElement="SequenceFlow_0ec9uo9">
+        <di:waypoint x="744" y="120" />
+        <di:waypoint x="901" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="EndEvent_086dpgt_di" bpmnElement="EndEvent_086dpgt">
+        <dc:Bounds x="1103" y="102" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_18l7zfd_di" bpmnElement="SequenceFlow_18l7zfd">
+        <di:waypoint x="1001" y="120" />
+        <di:waypoint x="1103" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="ServiceTask_1ig1244_di" bpmnElement="Task_12wtaq9">
+        <dc:Bounds x="901" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
